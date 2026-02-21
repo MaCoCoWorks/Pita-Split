@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="画像を指定したグリッドで分割し、一括ダウンロードできるWebアプリ">
+    <title>Image Splitter - 画像分割ツール</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link rel="icon" href="icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i data-lucide="grid-3x3" class="logo-icon"></i>
+                <h1>Image Splitter</h1>
+            </div>
+            <p class="tagline">画像を簡単に分割してダウンロード</p>
+            <button id="themeToggle" class="theme-toggle" aria-label="テーマ切り替え">
+                <i data-lucide="sun" class="theme-icon sun"></i>
+                <i data-lucide="moon" class="theme-icon moon"></i>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <i data-lucide="upload-cloud" class="upload-icon"></i>
+                        <h2>画像をドラッグ&ドロップ</h2>
+                        <p>または</p>
+                        <label class="file-select-btn">
+                            <i data-lucide="folder-open"></i>
+                            ファイルを選択
+                            <input type="file" id="fileInput" accept="image/*" hidden>
+                        </label>
+                        <p class="file-hint">PNG, JPG, WEBP対応</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Editor Section -->
+            <section class="editor-section hidden" id="editorSection">
+                <!-- Image Preview with Grid -->
+                <div class="preview-container">
+                    <div class="preview-header">
+                        <h2><i data-lucide="image"></i> プレビュー</h2>
+                        <button class="reset-btn" id="resetBtn">
+                            <i data-lucide="refresh-cw"></i>
+                            リセット
+                        </button>
+                    </div>
+                    <div class="image-preview-wrapper">
+                        <div class="image-preview" id="imagePreview">
+                            <img id="previewImage" alt="プレビュー">
+                            <div class="grid-overlay" id="gridOverlay"></div>
+                        </div>
+                    </div>
+                    <div class="image-info" id="imageInfo"></div>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls-container">
+                    <div class="control-card">
+                        <h3><i data-lucide="columns"></i> 列数（横）</h3>
+                        <div class="control-group">
+                            <input type="range" id="colSlider" min="1" max="10" value="2" class="slider">
+                            <div class="number-input-wrapper">
+                                <button class="num-btn minus" data-target="colInput">
+                                    <i data-lucide="minus"></i>
+                                </button>
+                                <input type="number" id="colInput" min="1" max="20" value="2" class="number-input">
+                                <button class="num-btn plus" data-target="colInput">
+                                    <i data-lucide="plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-card">
+                        <h3><i data-lucide="rows"></i> 行数（縦）</h3>
+                        <div class="control-group">
+                            <input type="range" id="rowSlider" min="1" max="10" value="2" class="slider">
+                            <div class="number-input-wrapper">
+                                <button class="num-btn minus" data-target="rowInput">
+                                    <i data-lucide="minus"></i>
+                                </button>
+                                <input type="number" id="rowInput" min="1" max="20" value="2" class="number-input">
+                                <button class="num-btn plus" data-target="rowInput">
+                                    <i data-lucide="plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- グリッドオフセット調整 -->
+                    <div class="control-card offset-card">
+                        <h3><i data-lucide="move"></i> グリッド位置調整</h3>
+                        <p class="offset-hint">グリッドのずれを微調整できます（px単位）</p>
+                        <div class="offset-controls">
+                            <div class="offset-group">
+                                <label for="offsetX">X オフセット</label>
+                                <div class="offset-input-wrapper">
+                                    <button class="num-btn minus" data-offset="offsetX" data-dir="-1">
+                                        <i data-lucide="minus"></i>
+                                    </button>
+                                    <input type="number" id="offsetX" value="0" class="number-input offset-input">
+                                    <button class="num-btn plus" data-offset="offsetX" data-dir="1">
+                                        <i data-lucide="plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="offset-group">
+                                <label for="offsetY">Y オフセット</label>
+                                <div class="offset-input-wrapper">
+                                    <button class="num-btn minus" data-offset="offsetY" data-dir="-1">
+                                        <i data-lucide="minus"></i>
+                                    </button>
+                                    <input type="number" id="offsetY" value="0" class="number-input offset-input">
+                                    <button class="num-btn plus" data-offset="offsetY" data-dir="1">
+                                        <i data-lucide="plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="offset-reset-btn" id="offsetResetBtn">
+                            <i data-lucide="rotate-ccw"></i>
+                            オフセットをリセット
+                        </button>
+                    </div>
+
+                    <div class="split-info">
+                        <div class="info-item">
+                            <span class="info-label">分割数</span>
+                            <span class="info-value" id="totalTiles">4</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">タイルサイズ</span>
+                            <span class="info-value" id="tileSize">-</span>
+                        </div>
+                    </div>
+
+
+                    <button class="download-btn" id="downloadBtn">
+                        <i data-lucide="download"></i>
+                        ZIPでダウンロード
+                    </button>
+
+                    <button class="download-btn individual" id="individualBtn">
+                        <i data-lucide="files"></i>
+                        個別にダウンロード
+                    </button>
+                </div>
+            </section>
+
+            <!-- Tiles Preview -->
+            <section class="tiles-section hidden" id="tilesSection">
+                <div class="tiles-header">
+                    <h2><i data-lucide="layout-grid"></i> 分割プレビュー</h2>
+                    <span class="tile-count" id="tileCount">0枚</span>
+                </div>
+                <div class="tiles-grid" id="tilesGrid"></div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2026 Image Splitter. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>処理中...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js');
+        }
+    </script>
+</body>
+
+</html>
