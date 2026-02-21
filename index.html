@@ -72,38 +72,39 @@
 
                 <!-- Controls -->
                 <div class="controls-container">
-                    <div class="control-card">
-                        <h3><i data-lucide="columns"></i> 列数（横）</h3>
-                        <div class="control-group">
-                            <input type="range" id="colSlider" min="1" max="10" value="2" class="slider">
-                            <div class="number-input-wrapper">
-                                <button class="num-btn minus" data-target="colInput">
-                                    <i data-lucide="minus"></i>
-                                </button>
-                                <input type="number" id="colInput" min="1" max="20" value="2" class="number-input">
-                                <button class="num-btn plus" data-target="colInput">
-                                    <i data-lucide="plus"></i>
-                                </button>
+                    <div class="col-row-controls">
+                        <div class="control-card">
+                            <h3><i data-lucide="columns"></i> 列数（横）</h3>
+                            <div class="control-group">
+                                <input type="range" id="colSlider" min="1" max="10" value="2" class="slider">
+                                <div class="number-input-wrapper">
+                                    <button class="num-btn minus" data-target="colInput">
+                                        <i data-lucide="minus"></i>
+                                    </button>
+                                    <input type="number" id="colInput" min="1" max="20" value="2" class="number-input">
+                                    <button class="num-btn plus" data-target="colInput">
+                                        <i data-lucide="plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-card">
+                            <h3><i data-lucide="rows"></i> 行数（縦）</h3>
+                            <div class="control-group">
+                                <input type="range" id="rowSlider" min="1" max="10" value="2" class="slider">
+                                <div class="number-input-wrapper">
+                                    <button class="num-btn minus" data-target="rowInput">
+                                        <i data-lucide="minus"></i>
+                                    </button>
+                                    <input type="number" id="rowInput" min="1" max="20" value="2" class="number-input">
+                                    <button class="num-btn plus" data-target="rowInput">
+                                        <i data-lucide="plus"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="control-card">
-                        <h3><i data-lucide="rows"></i> 行数（縦）</h3>
-                        <div class="control-group">
-                            <input type="range" id="rowSlider" min="1" max="10" value="2" class="slider">
-                            <div class="number-input-wrapper">
-                                <button class="num-btn minus" data-target="rowInput">
-                                    <i data-lucide="minus"></i>
-                                </button>
-                                <input type="number" id="rowInput" min="1" max="20" value="2" class="number-input">
-                                <button class="num-btn plus" data-target="rowInput">
-                                    <i data-lucide="plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- グリッドオフセット調整 -->
                     <div class="control-card offset-card">
                         <h3><i data-lucide="move"></i> グリッド位置調整</h3>
