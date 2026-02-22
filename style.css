@@ -501,8 +501,9 @@ body {
 }
 
 .num-btn {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    min-width: 2.5rem !important;
     border-radius: 0.5rem;
     border: none;
     background: var(--bg-tertiary);
@@ -512,6 +513,7 @@ body {
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
+    flex-shrink: 0;
 }
 
 .num-btn:hover {
@@ -525,7 +527,8 @@ body {
 }
 
 .number-input {
-    flex: 1;
+    flex: none;
+    width: 2.5rem;
     height: 2.5rem;
     border: 2px solid var(--border-color);
     border-radius: 0.5rem;
@@ -536,6 +539,7 @@ body {
     text-align: center;
     outline: none;
     transition: border-color 0.2s ease;
+    padding: 0;
 }
 
 .number-input:focus {
@@ -864,11 +868,6 @@ body {
         width: 100% !important;
     }
 
-    * {
-        box-sizing: border-box !important;
-        max-width: 100% !important;
-    }
-
     .app-container,
     .controls-container,
     .control-card,
@@ -894,11 +893,6 @@ body {
         width: 100% !important;
     }
 
-    * {
-        box-sizing: border-box !important;
-        max-width: 100% !important;
-    }
-
     /* カードやコンテナの幅を100%に固定し、余計な余白を削る */
     .app-container,
     .controls-container,
@@ -909,16 +903,17 @@ body {
         /* 左右の余白を少しだけ詰めて横幅を確保 */
     }
 
-    /* 【重要】数字入力欄の幅をボタン（2.5rem）に近いサイズに固定する */
+    /* 【重要】数字入力欄の幅をボタンと同じ正方形（2.5rem）に固定する */
     .number-input,
     .offset-input {
-        width: 3.5rem !important;
-        /* ボタンより少しだけ広くして2桁でも余裕を持たせる */
+        width: 2.5rem !important;
+        height: 2.5rem !important;
         flex: none !important;
         /* 横に伸びる性質をオフにする */
         pointer-events: none !important;
         /* キーボード立ち上がり防止 */
         background-color: var(--bg-tertiary) !important;
+        padding: 0 !important;
     }
 
     /* ボタンと入力欄を中央にギュッと寄せる */
