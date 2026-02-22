@@ -27,6 +27,12 @@ const loadingOverlay = document.getElementById('loadingOverlay');
 const offsetXInput = document.getElementById('offsetX');
 const offsetYInput = document.getElementById('offsetY');
 const offsetResetBtn = document.getElementById('offsetResetBtn');
+const scaleSlider = document.getElementById('scaleSlider');
+const scaleValue = document.getElementById('scaleValue');
+const scaleResetBtn = document.getElementById('scaleResetBtn');
+
+// 縮小率の状態
+let currentScale = 1.0;
 
 // 状態管理
 let currentImage = null;
@@ -160,15 +166,16 @@ function updateGrid() {
 
     gridOverlay.innerHTML = '';
 
-    // 表示上のオフセットをパーセントに変換
+    // 縮小率を考慮した実効サイズ
     const imgW = currentImage.naturalWidth;
     const imgH = currentImage.naturalHeight;
-    const offXPercent = (offX / imgW) * 100;
-    const offYPercent = (offY / imgH) * 100;
+    const scaledW = imgW * currentScale;
+    const scaledH = imgH * currentScale;
+    const offXPercent = (offX / scaledW) * 100;
+    const offYPercent = (offY / scaledH) * 100;
 
-    // 有効な切り出し範囲
-    const effectiveW = imgW - Math.abs(offX);
-    const effectiveH = imgH - Math.abs(offY);
+    const effectiveW = scaledW - Math.abs(offX);
+    const effectiveH = scaledH - Math.abs(offY);
 
     // 水平線（行の区切り）
     for (let i = 1; i < rows; i++) {
@@ -252,10 +259,12 @@ function generateTiles() {
     const offX = parseInt(offsetXInput.value) || 0;
     const offY = parseInt(offsetYInput.value) || 0;
 
+    const scaledW = currentImage.naturalWidth * currentScale;
+    const scaledH = currentImage.naturalHeight * currentScale;
     const startX = Math.max(0, offX);
     const startY = Math.max(0, offY);
-    const effectiveW = currentImage.naturalWidth - Math.abs(offX);
-    const effectiveH = currentImage.naturalHeight - Math.abs(offY);
+    const effectiveW = scaledW - Math.abs(offX);
+    const effectiveH = scaledH - Math.abs(offY);
     const tileWidth = Math.floor(effectiveW / cols);
     const tileHeight = Math.floor(effectiveH / rows);
 
@@ -404,14 +413,14 @@ async function downloadAsZip() {
         const rows = parseInt(rowInput.value) || 1;
         const offX = parseInt(offsetXInput.value) || 0;
         const offY = parseInt(offsetYInput.value) || 0;
+        const scaledW = currentImage.naturalWidth * currentScale;
+        const scaledH = currentImage.naturalHeight * currentScale;
         const startX = Math.max(0, offX);
         const startY = Math.max(0, offY);
-        const effectiveW = currentImage.naturalWidth - Math.abs(offX);
-        const effectiveH = currentImage.naturalHeight - Math.abs(offY);
+        const effectiveW = scaledW - Math.abs(offX);
+        const effectiveH = scaledH - Math.abs(offY);
         const tileWidth = Math.floor(effectiveW / cols);
         const tileHeight = Math.floor(effectiveH / rows);
-
-        // ファイル名をサニタイズ
         const safeFileName = sanitizeFileName(originalFileName);
 
         const zip = new JSZip();
@@ -498,10 +507,12 @@ async function downloadIndividually() {
         const rows = parseInt(rowInput.value) || 1;
         const offX = parseInt(offsetXInput.value) || 0;
         const offY = parseInt(offsetYInput.value) || 0;
+        const scaledW = currentImage.naturalWidth * currentScale;
+        const scaledH = currentImage.naturalHeight * currentScale;
         const startX = Math.max(0, offX);
         const startY = Math.max(0, offY);
-        const effectiveW = currentImage.naturalWidth - Math.abs(offX);
-        const effectiveH = currentImage.naturalHeight - Math.abs(offY);
+        const effectiveW = scaledW - Math.abs(offX);
+        const effectiveH = scaledH - Math.abs(offY);
         const tileWidth = Math.floor(effectiveW / cols);
         const tileHeight = Math.floor(effectiveH / rows);
 
@@ -588,6 +599,24 @@ offsetYInput.addEventListener('input', () => {
 offsetResetBtn.addEventListener('click', () => {
     offsetXInput.value = 0;
     offsetYInput.value = 0;
+    updateGrid();
+    generateTiles();
+});
+
+// ========================================
+// 縮小率スライダー
+// ========================================
+scaleSlider.addEventListener('input', () => {
+    currentScale = parseInt(scaleSlider.value) / 100;
+    scaleValue.textContent = `${scaleSlider.value}%`;
+    updateGrid();
+    generateTiles();
+});
+
+scaleResetBtn.addEventListener('click', () => {
+    scaleSlider.value = 100;
+    currentScale = 1.0;
+    scaleValue.textContent = '100%';
     updateGrid();
     generateTiles();
 });

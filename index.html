@@ -56,6 +56,16 @@
             <section class="editor-section hidden" id="editorSection">
                 <!-- Image Preview with Grid -->
                 <div class="preview-container">
+                    <div class="scale-control">
+                        <div class="scale-header">
+                            <i data-lucide="zoom-out"></i>
+                            <span>グリッド縮小率</span>
+                            <span class="scale-value" id="scaleValue">100%</span>
+                            <button class="scale-reset-btn" id="scaleResetBtn">リセット</button>
+                        </div>
+                        <input type="range" id="scaleSlider" min="50" max="100" value="100" class="slider scale-slider">
+                    </div>
+
                     <div class="preview-header">
                         <h2><i data-lucide="image"></i> プレビュー</h2>
                         <button class="reset-btn" id="resetBtn">

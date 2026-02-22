@@ -288,6 +288,61 @@ body {
     }
 }
 
+/* 縮小率スライダー */
+.scale-control {
+    background: var(--bg-secondary);
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 1rem;
+}
+
+.scale-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.scale-header svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    color: var(--accent-color);
+}
+
+.scale-value {
+    margin-left: auto;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.scale-reset-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.4rem;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.scale-reset-btn:hover {
+    background: var(--border-color);
+    color: var(--text-primary);
+}
+
+.scale-slider {
+    width: 100%;
+}
+
 /* Preview Container */
 .preview-container {
     background: var(--bg-secondary);
