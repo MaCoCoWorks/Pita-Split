@@ -261,8 +261,11 @@ function generateTiles() {
 
     const scaledW = currentImage.naturalWidth * currentScale;
     const scaledH = currentImage.naturalHeight * currentScale;
-    const startX = Math.max(0, offX);
-    const startY = Math.max(0, offY);
+    // 中央基点：削られる余白を左右・上下均等に分配
+    const marginX = (currentImage.naturalWidth - scaledW) / 2;
+    const marginY = (currentImage.naturalHeight - scaledH) / 2;
+    const startX = marginX + Math.max(0, offX);
+    const startY = marginY + Math.max(0, offY);
     const effectiveW = scaledW - Math.abs(offX);
     const effectiveH = scaledH - Math.abs(offY);
     const tileWidth = Math.floor(effectiveW / cols);
@@ -415,8 +418,10 @@ async function downloadAsZip() {
         const offY = parseInt(offsetYInput.value) || 0;
         const scaledW = currentImage.naturalWidth * currentScale;
         const scaledH = currentImage.naturalHeight * currentScale;
-        const startX = Math.max(0, offX);
-        const startY = Math.max(0, offY);
+        const marginX = (currentImage.naturalWidth - currentImage.naturalWidth * currentScale) / 2;
+        const marginY = (currentImage.naturalHeight - currentImage.naturalHeight * currentScale) / 2;
+        const startX = marginX + Math.max(0, offX);
+        const startY = marginY + Math.max(0, offY);
         const effectiveW = scaledW - Math.abs(offX);
         const effectiveH = scaledH - Math.abs(offY);
         const tileWidth = Math.floor(effectiveW / cols);
@@ -509,8 +514,10 @@ async function downloadIndividually() {
         const offY = parseInt(offsetYInput.value) || 0;
         const scaledW = currentImage.naturalWidth * currentScale;
         const scaledH = currentImage.naturalHeight * currentScale;
-        const startX = Math.max(0, offX);
-        const startY = Math.max(0, offY);
+        const marginX = (currentImage.naturalWidth - scaledW) / 2;
+        const marginY = (currentImage.naturalHeight - scaledH) / 2;
+        const startX = marginX + Math.max(0, offX);
+        const startY = marginY + Math.max(0, offY);
         const effectiveW = scaledW - Math.abs(offX);
         const effectiveH = scaledH - Math.abs(offY);
         const tileWidth = Math.floor(effectiveW / cols);
