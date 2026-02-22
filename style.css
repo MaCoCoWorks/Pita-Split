@@ -1,8 +1,8 @@
 /* ========================================
-   Image Splitter - Recovery & Fixed Styles
+   Image Splitter - Full Recovery & Fix
    ======================================== */
 
-/* 1. 基本設定：はみ出しを根本から防ぐ */
+/* 1. 根本的なサイズ修正（はみ出し・余白の解決） */
 *,
 *::before,
 *::after {
@@ -14,117 +14,123 @@
 html,
 body {
     overflow-x: hidden;
+    /* 右側へのはみ出しを強制カット */
     width: 100%;
     background-color: #f8fafc;
     color: #1e293b;
     font-family: 'Inter', -apple-system, sans-serif;
 }
 
-/* 2. デザイン変数 */
+/* 2. カラー設定（元の綺麗な色を維持） */
 :root {
     --bg-primary: #f8fafc;
     --bg-secondary: #ffffff;
-    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    --bg-tertiary: #f1f5f9;
+    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
     --accent-color: #6366f1;
     --border-color: #e2e8f0;
+    --text-primary: #1e293b;
 }
 
-/* 3. レイアウト：左右の余白崩れを解消 */
+/* 3. レイアウト修正（左の余白問題を解決） */
 .app-container {
     width: 100% !important;
     max-width: 1200px !important;
-    /* PCでは適切に広がり、スマホでは画面に収まる */
     margin: 0 auto !important;
+    /* 中央に配置 */
     padding: 20px !important;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 }
 
-/* 4. 操作パネルとボタンの調整 */
-.controls-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+/* 4. 画像プレビュー（ここを修正しました） */
+.preview-container {
+    background: var(--bg-secondary);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
-    width: 100%;
+}
+
+.image-preview-wrapper {
+    display: flex;
+    justify-content: center;
+    background: var(--bg-tertiary);
+    border-radius: 1rem;
+    padding: 1rem;
+    overflow: hidden;
+}
+
+.image-preview {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+}
+
+.image-preview img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+}
+
+/* 5. 操作パネル（ボタン類） */
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.control-card {
+    background: var(--bg-secondary);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .control-group {
-    background: var(--bg-secondary);
-    padding: 1.25rem;
-    border-radius: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     min-width: 0;
     /* スマホでの突き抜け防止 */
-}
-
-/* 5. プレビューエリア（画像が表示されない問題を解決） */
-.preview-container {
-    background: var(--bg-secondary);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     width: 100%;
-    margin-top: 1rem;
 }
 
-.grid-preview {
-    display: grid;
-    gap: 4px;
-    background: var(--border-color);
-    border: 2px solid var(--border-color);
-    border-radius: 0.5rem;
-    overflow: hidden;
-    width: 100%;
-    max-width: 800px;
-    /* 画像が大きすぎないように制限 */
-    margin: 0 auto 1.5rem;
-}
-
-.grid-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* 6. ボタンのデザイン */
-.btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
+/* 6. ボタンと文字のデザイン */
+.logo h1 {
+    font-size: 2rem;
+    font-weight: 700;
     text-align: center;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
 }
 
-.btn-primary {
+.btn {
+    padding: 0.875rem 1.75rem;
     background: var(--accent-gradient);
     color: white;
+    border: none;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
 }
 
-.btn-secondary {
-    background: #f1f5f9;
-    color: #1e293b;
-}
-
-/* 7. スマホ専用の調整 */
+/* 7. スマホ専用の最終調整 */
 @media (max-width: 768px) {
     .app-container {
         padding: 10px !important;
     }
 
-    .controls-container {
-        grid-template-columns: 1fr;
-        /* スマホでは1列に並べる */
+    .logo h1 {
+        font-size: 1.5rem;
     }
 
     .btn {
         width: 100%;
-        /* ボタンを横幅いっぱいにする */
     }
 }
