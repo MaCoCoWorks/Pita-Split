@@ -300,11 +300,20 @@ body {
 .scale-header {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 0.75rem;
     font-size: 0.9375rem;
     font-weight: 600;
     color: var(--text-primary);
+}
+
+.scale-value {
+    margin-left: auto;
+}
+
+.scale-reset-btn {
+    margin-left: 0;
 }
 
 .scale-header svg {
@@ -924,12 +933,39 @@ body {
     }
 
     /* ボタン・入力欄・アイコン以外の要素にだけmax-widthをかける */
-    div, section, article, main, header, footer, nav,
-    p, h1, h2, h3, h4, h5, h6, span, label,
-    img, canvas, video, table, ul, ol, li,
-    .upload-area, .preview-container, .controls-container,
-    .control-card, .control-group, .split-info, .tiles-grid,
-    .number-input-wrapper, .offset-input-wrapper, .offset-controls {
+    div,
+    section,
+    article,
+    main,
+    header,
+    footer,
+    nav,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    span,
+    label,
+    img,
+    canvas,
+    video,
+    table,
+    ul,
+    ol,
+    li,
+    .upload-area,
+    .preview-container,
+    .controls-container,
+    .control-card,
+    .control-group,
+    .split-info,
+    .tiles-grid,
+    .number-input-wrapper,
+    .offset-input-wrapper,
+    .offset-controls {
         box-sizing: border-box !important;
         max-width: 100% !important;
     }
